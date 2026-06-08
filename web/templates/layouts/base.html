@@ -1,1 +1,57 @@
 <!-- Outer boilerplate document (Includes HTMX head injection scripts) -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="e-Thrift a premium ecommerce app with m-pesa intergration">
+    <meta name="author" content="e-Thrift">
+    <title>{% block title %} e-Thrift{% endblock %} | Kenyan E-commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unkpg.com/htmx.org/dist/ext/loading-states.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    {%block extra_css%}{% endblock %}
+  </head>
+  <body>
+    {% inclide "layout/navigation.html"%}
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+    {% include "layouts/footer.html" %}
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+      <div class="spinner"></div>
+      <p>Processing...</p>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    <script>
+      function initiateMpesaPayment(phoneNumber, amount, orderId){
+        console.log('initiating M-pesa for${phoneNumber}, amount: ${amount}');
+        document.getElementById('loading-overlay').style.display = 'flex';
+        fetch('/api/mpesa/stkpush',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone_number: phoneNumber,
+            amount: amount,
+            order_id: orderId
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('loading-overlay').style.display = 'none';
+          if (data.success){
+            alert('STK Push sent! check phone for M-Pesa prompt.');
+          }else{
+            aleert('payment failed:' + data.message);
+            
+        
+    </script>
+    
+  </body>
+
+  
