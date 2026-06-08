@@ -48,7 +48,18 @@
             alert('STK Push sent! check phone for M-Pesa prompt.');
           }else{
             aleert('payment failed:' + data.message);
-            
+            }
+        })
+        .catch(error => {
+          document.getElementById('loading-overlay').style.display ='none';
+          alert('Error: ' +error);
+        });
+      }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
         
     </script>
     
