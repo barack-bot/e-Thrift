@@ -21,17 +21,17 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/static/css/styles.css">
 
-    {% block extra_css %}{% endblock %}
+    {{ block "extra_css" . }}{{ end }}
 </head>
 <body>
 
-    {% include "layouts/navigation.html" %}
+    {{ template "navigation.html" . }}
 
     <main class="main-content">
-        {% block content %}{% endblock %}
+        {{ block "content" . }}{{ end }}
     </main>
 
-    {% include "layouts/footer.html" %}
+    {{ template "footer.html" . }}
 
     <!-- Loading overlay (M-Pesa / async) -->
     <div id="loading-overlay" class="loading-overlay" style="display:none;">
@@ -65,8 +65,10 @@
 
     <!-- JS -->
     <script src="/static/js/main.js"></script>
-    {% block extra_js %}{% endblock %}
+    {{ block "extra_js" . }}{{ end }}
 
 </body>
 </html>
+  
+
   
