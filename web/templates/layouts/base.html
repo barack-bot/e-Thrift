@@ -1,68 +1,72 @@
-<!-- Outer boilerplate document (Includes HTMX head injection scripts) -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="e-Thrift a premium ecommerce app with m-pesa intergration">
+    <meta name="description" content="e-Thrift — Sustainable thrift fashion marketplace with M-Pesa integration">
     <meta name="author" content="e-Thrift">
-    <title>{% block title %} e-Thrift{% endblock %} | Kenyan E-commerce</title>
+    <title>{% block title %}e-Thrift{% endblock %} | Kenyan Thrift Marketplace</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://unkpg.com/htmx.org/dist/ext/loading-states.js"></script>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="/static/css/styles.css">
-    {%block extra_css%}{% endblock %}
-  </head>
-  <body>
-    {% inclide "layout/navigation.html"%}
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    {% include "layouts/navigation.html" %}
+
     <main class="main-content">
-      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </main>
+
     {% include "layouts/footer.html" %}
-    <div id="loading-overlay" class="loading-overlay" style="display: none;">
-      <div class="spinner"></div>
-      <p>Processing...</p>
+
+    <!-- Loading overlay (M-Pesa / async) -->
+    <div id="loading-overlay" class="loading-overlay" style="display:none;">
+        <div class="spinner"></div>
+        <p>Processing payment...</p>
     </div>
 
+    <!-- Mobile sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-sidebar-header">
+            <span class="sidebar-logo">
+                <span class="logo-green">e</span><span class="logo-dark">-Thrift</span>
+            </span>
+            <button class="close-sidebar" id="closeSidebarBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="mobile-categories">
+            <a href="/category/men"       class="mobile-category-link"><i class="fas fa-male fa-fw"></i> Men</a>
+            <a href="/category/women"     class="mobile-category-link"><i class="fas fa-female fa-fw"></i> Women</a>
+            <a href="/category/kids"      class="mobile-category-link"><i class="fas fa-child fa-fw"></i> Kids</a>
+            <a href="/category/accessories" class="mobile-category-link"><i class="fas fa-glasses fa-fw"></i> Accessories</a>
+            <a href="/category/sale"      class="mobile-category-link sale-link"><i class="fas fa-tag fa-fw"></i> Sale</a>
+            <hr style="border:none;border-top:1px solid var(--gray-light);margin:8px 0;">
+            <a href="/orders"   class="mobile-category-link"><i class="fas fa-box fa-fw"></i> My Orders</a>
+            <a href="/wishlist" class="mobile-category-link"><i class="fas fa-heart fa-fw"></i> Wishlist</a>
+            <a href="/sell"     class="mobile-category-link"><i class="fas fa-plus-circle fa-fw"></i> Sell an Item</a>
+        </nav>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- JS -->
     <script src="/static/js/main.js"></script>
-    <script>
-      function initiateMpesaPayment(phoneNumber, amount, orderId){
-        console.log('initiating M-pesa for${phoneNumber}, amount: ${amount}');
-        document.getElementById('loading-overlay').style.display = 'flex';
-        fetch('/api/mpesa/stkpush',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            phone_number: phoneNumber,
-            amount: amount,
-            order_id: orderId
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('loading-overlay').style.display = 'none';
-          if (data.success){
-            alert('STK Push sent! check phone for M-Pesa prompt.');
-          }else{
-            aleert('payment failed:' + data.message);
-            }
-        })
-        .catch(error => {
-          document.getElementById('loading-overlay').style.display ='none';
-          alert('Error: ' +error);
-        });
-      }
-    </script>
-
     {% block extra_js %}{% endblock %}
-  </body>
-</html>
-        
-    </script>
-    
-  </body>
 
+</body>
+</html>
   
