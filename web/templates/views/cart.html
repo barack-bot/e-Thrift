@@ -1,1 +1,148 @@
 <!-- Review summary displaying aggregate sums prior to checkout steps -->
+{% extends "layouts/base.html" %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right fa-xs"></i></span>
+            <span>Cart</span>
+        </div>
+        <h1>Shopping Cart</h1>
+        {% if cart_items %}
+        <p class="text-muted">{{ cart_items | length }} item{{ 's' if cart_items | length != 1 }}</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container" style="padding-bottom:var(--space-3xl);">
+
+    {% if not cart_items %}
+    <!-- Empty cart state -->
+    <div class="empty-state">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Your cart is empty</h3>
+        <p style="margin-bottom:var(--space-xl);">Looks like you haven't added anything yet.</p>
+        <a href="/category/all" class="btn btn-primary">
+            <i class="fas fa-tshirt"></i> Start Shopping
+        </a>
+    </div>
+
+    {% else %}
+    <div class="cart-layout">
+
+        <!-- ======================================================= -->
+        <!-- CART ITEMS                                               -->
+        <!-- ======================================================= -->
+        <div id="cart-items-list">
+            {% for item in cart_items %}
+            <div class="cart-item" id="cart-item-{{ item.id }}">
+
+                <!-- Thumbnail -->
+                <div class="cart-item-image">
+                    {% if item.image %}
+                    <img src="{{ item.image }}" alt="{{ item.title }}">
+                    {% else %}
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray-medium);">
+                        <i class="fas fa-tshirt fa-2x"></i>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Info -->
+                <div>
+                    <div class="cart-item-brand">{{ item.brand | default("e-Thrift") }}</div>
+                    <div class="cart-item-title">{{ item.title }}</div>
+                    <div class="cart-item-size">Size: {{ item.size }}</div>
+                    <div class="qty-control">
+                        <button class="qty-btn"
+                            hx-post="/api/cart/update"
+                            hx-vals='{"item_id":"{{ item.id }}","action":"decrease"}'
+                            hx-target="#cart-items-list"
+                            hx-swap="outerHTML"
+                        >−</button>
+                        <span class="qty-value">{{ item.quantity | default(1) }}</span>
+                        <button class="qty-btn"
+                            hx-post="/api/cart/update"
+                            hx-vals='{"item_id":"{{ item.id }}","action":"increase"}'
+                            hx-target="#cart-items-list"
+                            hx-swap="outerHTML"
+                        >+</button>
+                    </div>
+                </div>
+
+                <!-- Price + remove -->
+                <div style="text-align:right;">
+                    <div class="product-price">KSh {{ "{:,.0f}".format(item.price * item.quantity) }}</div>
+                    {% if item.quantity > 1 %}
+                    <div class="text-muted" style="font-size:0.78rem;margin-top:2px;">KSh {{ "{:,.0f}".format(item.price) }} each</div>
+                    {% endif %}
+                    <button class="remove-btn mt-md"
+                        hx-delete="/api/cart/remove"
+                        hx-vals='{"item_id":"{{ item.id }}"}'
+                        hx-target="#cart-item-{{ item.id }}"
+                        hx-swap="outerHTML"
+                        hx-confirm="Remove this item?"
+                    >
+                        <i class="fas fa-trash-alt"></i> Remove
+                    </button>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- ORDER SUMMARY                                            -->
+        <!-- ======================================================= -->
+        <div class="cart-summary-box">
+            <h3>Order Summary</h3>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>KSh {{ "{:,.0f}".format(subtotal | default(0)) }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>{{ "Free" if subtotal >= 2000 else "KSh 200" }}</span>
+            </div>
+            {% if discount %}
+            <div class="summary-row" style="color:var(--e-green);">
+                <span>Discount</span>
+                <span>− KSh {{ "{:,.0f}".format(discount) }}</span>
+            </div>
+            {% endif %}
+            <div class="summary-row">
+                <span>Total</span>
+                <span>KSh {{ "{:,.0f}".format(total | default(0)) }}</span>
+            </div>
+
+            <!-- Promo code -->
+            <div style="margin:var(--space-lg) 0;display:flex;gap:var(--space-sm);">
+                <input type="text" placeholder="Promo code" id="promo-input"
+                    style="flex:1;padding:9px 12px;border:1px solid var(--gray-medium);border-radius:var(--radius-md);font-size:0.875rem;outline:none;">
+                <button class="btn btn-outline btn-sm"
+                    hx-post="/api/cart/promo"
+                    hx-include="#promo-input"
+                    hx-target=".cart-summary-box"
+                    hx-swap="outerHTML"
+                >Apply</button>
+            </div>
+
+            <a href="/checkout" class="btn btn-primary btn-full" style="margin-top:var(--space-sm);">
+                <i class="fas fa-lock"></i> Checkout with M-Pesa
+            </a>
+
+            <p class="text-muted text-center" style="font-size:0.78rem;margin-top:var(--space-md);">
+                <i class="fas fa-shield-alt"></i> Secure payment via M-Pesa STK Push
+            </p>
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
