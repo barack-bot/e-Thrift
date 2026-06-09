@@ -1,1 +1,139 @@
 <!-- Brand disclosures and links -->
+<!-- 
+    E-THRIFT FOOTER - BLACK BACKGROUND
+    Dark footer with green accents, white text
+    Contains: About, Quick Links, M-Pesa Info, Social Links, Copyright
+-->
+
+<footer class="footer">
+    <div class="footer-container">
+        
+        <!-- FOOTER GRID - 4 Columns -->
+        <div class="footer-grid">
+            
+            <!-- COLUMN 1: About e-Thrift -->
+            <div class="footer-section">
+                <h3>
+                    <span class="logo-green">e-</span><span class="logo-black">Thrift</span>
+                </h3>
+                <p class="footer-description">
+                    Sustainable thrift shopping meets modern tech. 
+                    Find unique second-hand items with quality verification.
+                    Every purchase supports circular economy in Kenya.
+                </p>
+                <div class="mpesa-section">
+                    <div class="mpesa-title">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Pay with M-Pesa</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--footer-text);">
+                        Seamless STK Push integration. 
+                        Pay directly from your M-Pesa.
+                    </p>
+                    <div class="mpesa-icons">
+                        <span class="mpesa-icon">📱 M-Pesa</span>
+                        <span class="mpesa-icon">💳 Card</span>
+                        <span class="mpesa-icon">🏦 Bank</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- COLUMN 2: Quick Links -->
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/category/men">Men's Thrift</a></li>
+                    <li><a href="/category/women">Women's Thrift</a></li>
+                    <li><a href="/category/kids">Kids' Thrift</a></li>
+                    <li><a href="/category/accessories">Accessories</a></li>
+                    <li><a href="/sale">Sale Items</a></li>
+                </ul>
+            </div>
+            
+            <!-- COLUMN 3: Customer Service -->
+            <div class="footer-section">
+                <h4>Customer Service</h4>
+                <ul class="footer-links">
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/shipping">Shipping Info</a></li>
+                    <li><a href="/returns">Returns Policy</a></li>
+                    <li><a href="/size-guide">Size Guide</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <!-- COLUMN 4: Connect With Us -->
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <ul class="footer-links">
+                    <li><a href="#" target="_blank">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a></li>
+                    <li><a href="#" target="_blank">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a></li>
+                    <li><a href="#" target="_blank">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a></li>
+                    <li><a href="#" target="_blank">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a></li>
+                    <li><a href="#">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Support
+                    </a></li>
+                </ul>
+                
+                <!-- Social media icons row -->
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER BOTTOM - Copyright and legal links -->
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2024 e-Thrift. All rights reserved.
+            </div>
+            <div class="legal-links">
+                <a href="/privacy">Privacy Policy</a> |
+                <a href="/terms">Terms of Service</a> |
+                <a href="/cookies">Cookie Policy</a>
+            </div>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fas fa-mobile-alt"></i>
+                <span style="color: var(--e-green);">M-PESA</span>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+<!-- Auto-update copyright year -->
+<script>
+    (function() {
+        const yearElement = document.querySelector('.copyright');
+        if (yearElement) {
+            const currentYear = new Date().getFullYear();
+            yearElement.innerHTML = `&copy; ${currentYear} e-Thrift. All rights reserved.`;
+        }
+    })();
+</script>
