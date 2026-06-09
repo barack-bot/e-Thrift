@@ -1,1 +1,10 @@
 /* Core frontend layout styles */
+:root {
+  --e-green: #1A9C4A;
+  --e-green-light: #2BBE5E;
+  --e-green-dark: #0F6B32;
+  --e-green-bg: #E8F5E9;
+  --e-green-dim: #C8E6C9;
+
+--white: #FFFFFF;
+  
