@@ -1,1 +1,148 @@
 <!-- Dedicated catalog item specifications with Add-to-Cart controls -->
+{% extends "layouts/base.html" %}
+{% block title %}{{ product.title | default("Product") }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header" style="padding:var(--space-lg) 0;">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right fa-xs"></i></span>
+            <a href="/category/{{ product.category_slug | default('all') }}">{{ product.category | default("Shop") }}</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right fa-xs"></i></span>
+            <span>{{ product.title | default("Product") }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom:var(--space-3xl);">
+    <div class="product-detail-layout">
+
+        <!-- ======================================================= -->
+        <!-- GALLERY                                                   -->
+        <!-- ======================================================= -->
+        <div class="product-gallery">
+            <div class="product-main-image" id="main-image">
+                {% if product.images %}
+                    <img src="{{ product.images[0] }}" alt="{{ product.title }}">
+                {% else %}
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray-medium);">
+                        <i class="fas fa-tshirt" style="font-size:4rem;"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if product.images and product.images | length > 1 %}
+            <div class="product-thumbs">
+                {% for img in product.images %}
+                <div class="product-thumb {% if loop.first %}active{% endif %}"
+                     onclick="document.querySelector('#main-image img').src='{{ img }}';
+                              document.querySelectorAll('.product-thumb').forEach(t=>t.classList.remove('active'));
+                              this.classList.add('active');">
+                    <img src="{{ img }}" alt="View {{ loop.index }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- PRODUCT INFO                                              -->
+        <!-- ======================================================= -->
+        <div>
+            <div class="product-brand">{{ product.brand | default("e-Thrift") }}</div>
+
+            <h1 style="font-size:1.8rem;margin-bottom:var(--space-md);">
+                {{ product.title | default("Product Title") }}
+            </h1>
+
+            <!-- Rating stub -->
+            <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-lg);">
+                <span style="color:var(--yellow);">
+                    {% for i in range(5) %}
+                    <i class="fas fa-star" style="font-size:0.85rem;"></i>
+                    {% endfor %}
+                </span>
+                <span class="text-muted" style="font-size:0.875rem;">({{ product.review_count | default(0) }} reviews)</span>
+                <span style="color:var(--gray-medium);">|</span>
+                <span class="text-muted" style="font-size:0.875rem;">Condition: <strong class="text-green">{{ product.condition | default("Good") }}</strong></span>
+            </div>
+
+            <div class="product-info-price">
+                KSh {{ "{:,.0f}".format(product.price | default(0)) }}
+                {% if product.original_price %}
+                <span class="product-info-price-original">KSh {{ "{:,.0f}".format(product.original_price) }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Size selector -->
+            <div style="margin-bottom:var(--space-xl);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-sm);">
+                    <span style="font-size:0.875rem;font-weight:600;">Select Size</span>
+                    <a href="/size-guide" class="text-green" style="font-size:0.8rem;">Size guide</a>
+                </div>
+                <div class="size-options">
+                    {% for size in product.sizes | default(["XS", "S", "M", "L", "XL"]) %}
+                    <button class="size-btn {% if loop.first %}selected{% endif %}"
+                            onclick="document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected');document.getElementById('selected-size').value=this.textContent.trim();">
+                        {{ size }}
+                    </button>
+                    {% endfor %}
+                </div>
+                <input type="hidden" id="selected-size" value="{{ product.sizes[0] | default('M') }}">
+            </div>
+
+            <!-- Add to Cart -->
+            <div style="display:flex;gap:var(--space-md);margin-bottom:var(--space-xl);">
+                <button
+                    class="btn btn-primary"
+                    style="flex:1;"
+                    hx-post="/api/cart/add"
+                    hx-vals='{"product_id": "{{ product.id }}", "size": ""}'
+                    hx-target="#cart-count"
+                    hx-swap="innerHTML"
+                    onclick="document.querySelector('[hx-vals]').setAttribute('hx-vals', JSON.stringify({product_id:'{{ product.id }}',size:document.getElementById('selected-size').value}))"
+                >
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <button class="btn btn-outline" style="padding:11px 16px;" aria-label="Add to wishlist"
+                        hx-post="/api/wishlist/add"
+                        hx-vals='{"product_id": "{{ product.id }}"}'
+                >
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+
+            <!-- Description -->
+            <div style="border-top:1px solid var(--gray-light);padding-top:var(--space-lg);">
+                <h3 style="font-size:1rem;margin-bottom:var(--space-md);">Description</h3>
+                <p class="text-muted" style="font-size:0.9rem;line-height:1.8;">
+                    {{ product.description | default("No description available.") }}
+                </p>
+            </div>
+
+            <!-- Details grid -->
+            <div style="border-top:1px solid var(--gray-light);padding-top:var(--space-lg);margin-top:var(--space-lg);">
+                <h3 style="font-size:1rem;margin-bottom:var(--space-md);">Item Details</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm) var(--space-xl);">
+                    {% set details = [
+                        ("Brand",     product.brand     | default("—")),
+                        ("Condition", product.condition | default("Good")),
+                        ("Category",  product.category  | default("—")),
+                        ("Posted",    product.posted_at  | default("—")),
+                    ] %}
+                    {% for label, value in details %}
+                    <div>
+                        <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gray);">{{ label }}</span>
+                        <p style="font-size:0.9rem;font-weight:600;color:var(--gray-dark);margin-top:2px;">{{ value }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
