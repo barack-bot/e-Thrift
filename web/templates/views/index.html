@@ -1,451 +1,150 @@
-<!-- Storefront home landing presentation -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-Thrift | Curated Sustainable Fashion</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        :root {
-            --primary-green: #2e7d32;
-            --primary-green-light: #e8f5e9;
-            --tag-gold: #d99116;
-            --text-dark: #1a1a1a;
-            --text-muted: #666666;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --radius-lg: 20px;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+{% extends "layouts/base.html" %}
+{% block title %}Home{% endblock %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+{% block content %}
 
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
+<!-- ============================================================ -->
+<!-- HERO                                                          -->
+<!-- ============================================================ -->
+<section class="hero">
+    <div class="hero-content">
 
-        /* --- NAVIGATION --- */
-        header {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-        }
+        <div class="hero-eyebrow">
+            <i class="fas fa-leaf"></i>
+            Sustainable · Affordable · Kenyan
+        </div>
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        <h1>Your favourite wardrobe<br>is <em>already out there.</em></h1>
 
-        /* Professional Logo Integration */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.5px;
-        }
+        <p>
+            Buy, sell, and discover unique pre-loved fashion curated for
+            your style. Every item quality-checked. Pay with M-Pesa.
+        </p>
 
-        .logo span {
-            color: var(--primary-green);
-        }
-
-        .logo-tag {
-            background-color: var(--tag-gold);
-            color: white;
-            padding: 3px 8px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Interactive Menu Links */
-        .nav-menu {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 15px;
-            transition: var(--transition);
-            position: relative;
-            padding: 4px 0;
-        }
-
-        .nav-menu a:hover, .nav-menu a.active {
-            color: var(--text-dark);
-        }
-
-        /* Elegant line replacing the bracket concept */
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-green);
-            transition: var(--transition);
-        }
-
-        .nav-menu a:hover::after, .nav-menu a.active::after {
-            width: 100%;
-        }
-
-        /* Right Nav Icons */
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            cursor: pointer;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .icon-btn:hover {
-            color: var(--primary-green);
-            transform: translateY(-1px);
-        }
-
-        /* --- HERO SECTION WITH WAVE ELEMENT --- */
-        .hero {
-            background-color: #ffffff;
-            padding: 80px 24px 120px 24px;
-            position: relative;
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 650px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1.15;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 18px;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
-
-        /* Clean Functional Replacement for Filter Buttons */
-        .hero-actions {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: var(--text-dark);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-green);
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-dark);
-            border: 2px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--text-dark);
-            background-color: var(--bg-light);
-        }
-
-        /* Smooth visual flow wave styling */
-        .hero-wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            color: var(--bg-light);
-            z-index: 1;
-        }
-
-        /* --- APP CONTENT / PRODUCT GRID SECTION --- */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 32px;
-        }
-
-        .section-header h2 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        /* Grid System */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background-color: white;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-            border-color: transparent;
-        }
-
-        .product-image {
-            height: 320px;
-            background-color: #ededed;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b5b5b5;
-        }
-
-        /* Decorative hanger element referencing sketch icon */
-        .hanger-badge {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-green);
-        }
-
-        .product-details {
-            padding: 20px;
-        }
-
-        .product-brand {
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--primary-green);
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .product-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .product-size {
-            font-size: 12px;
-            background-color: var(--bg-light);
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <span>e</span>-Thrift
-                <div class="logo-tag">Live</div>
+        <div class="hero-actions">
+            <a href="/category/women" class="btn btn-primary">
+                <i class="fas fa-tshirt"></i> Shop New Arrivals
             </a>
-            
-            <ul class="nav-menu">
-                <li><a href="#" class="active">Shop</a></li>
-                <li><a href="#">Sell</a></li>
-                <li><a href="#">My Wardrobe</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
-                <button class="icon-btn" aria-label="Favorites"><i data-lucide="heart"></i></button>
-                <button class="icon-btn" aria-label="Cart"><i data-lucide="shopping-bag"></i></button>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Your favorite wardrobe is already out there.</h1>
-            <p>Buy, sell, and discover unique pre-loved fashion items curated perfectly for your unique style framework.</p>
-            <div class="hero-actions">
-                <a href="#" class="btn btn-primary">New Arrivals</a>
-                <a href="#" class="btn btn-secondary">Filter by Size</a>
-            </div>
+            <a href="/sell" class="btn btn-outline">
+                <i class="fas fa-plus"></i> Sell an Item
+            </a>
+            <a href="/size-guide" class="btn btn-outline">
+                <i class="fas fa-ruler"></i> Size Guide
+            </a>
         </div>
 
-        <svg class="hero-wave" viewBox="0 0 1440 74" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,32L120,42.7C240,53,480,75,720,74.7C960,75,1200,53,1320,42.7L1440,32L1440,74L1320,74C1200,74,960,74,720,74C480,74,240,74,120,74L0,74Z"></path>
-        </svg>
-    </section>
+    </div>
 
-    <main class="main-content">
+    <!-- Wave separator — matches sketch flow element -->
+    <svg class="hero-wave" viewBox="0 0 1440 74" fill="currentColor" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,32L120,42.7C240,53,480,75,720,74.7C960,75,1200,53,1320,42.7L1440,32L1440,74H1320C1200,74,960,74,720,74C480,74,240,74,120,74H0Z"/>
+    </svg>
+</section>
+
+<!-- ============================================================ -->
+<!-- TRENDING COLLECTIONS                                          -->
+<!-- ============================================================ -->
+<section class="section-wrap bg-off">
+    <div class="container">
+
         <div class="section-header">
             <h2>Trending Collections</h2>
+            <a href="/category/all" class="view-all-link">
+                View all <i class="fas fa-arrow-right fa-xs"></i>
+            </a>
         </div>
 
-        <div class="product-grid">
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="hanger-badge"><i data-lucide="shirt" size="18"></i></div>
-                    <i data-lucide="image" size="36"></i>
-                </div>
+        <!--
+            HTMX renders the actual product cards server-side.
+            The partial at /partials/product-grid renders .product-card items.
+            On full-page loads this block is server-rendered inline.
+        -->
+        <div
+            class="product-grid"
+            id="product-grid"
+            hx-get="/partials/product-grid?section=trending"
+            hx-trigger="load"
+            hx-swap="innerHTML"
+        >
+            <!-- Skeleton placeholders shown while HTMX loads -->
+            {% for i in range(8) %}
+            <div class="product-card" style="pointer-events:none;opacity:0.4;">
+                <div class="product-image" style="background:var(--gray-light);"></div>
                 <div class="product-details">
-                    <div class="product-brand">Vintage Apparel</div>
-                    <div class="product-title">90s Heavyweight Worker Jacket</div>
-                    <div class="product-meta">
-                        <span class="product-price">$64.00</span>
-                        <span class="product-size">Size L</span>
-                    </div>
+                    <div style="height:10px;background:var(--gray-light);border-radius:4px;width:40%;margin-bottom:8px;"></div>
+                    <div style="height:14px;background:var(--gray-light);border-radius:4px;width:80%;margin-bottom:12px;"></div>
+                    <div style="height:12px;background:var(--gray-light);border-radius:4px;width:30%;"></div>
                 </div>
             </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="hanger-badge"><i data-lucide="shirt" size="18"></i></div>
-                    <i data-lucide="image" size="36"></i>
-                </div>
-                <div class="product-details">
-                    <div class="product-brand">Streetwear Co.</div>
-                    <div class="product-title">Relaxed Knit Cotton Sweater</div>
-                    <div class="product-meta">
-                        <span class="product-price">$42.00</span>
-                        <span class="product-size">Size M</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="hanger-badge"><i data-lucide="shirt" size="18"></i></div>
-                    <i data-lucide="image" size="36"></i>
-                </div>
-                <div class="product-details">
-                    <div class="product-brand">Denim Studio</div>
-                    <div class="product-title">Classic Handwashed Denim Jeans</div>
-                    <div class="product-meta">
-                        <span class="product-price">$58.00</span>
-                        <span class="product-size">Size 32</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="hanger-badge"><i data-lucide="shirt" size="18"></i></div>
-                    <i data-lucide="image" size="36"></i>
-                </div>
-                <div class="product-details">
-                    <div class="product-brand">Minimalist</div>
-                    <div class="product-title">Structured Oversized Trench Coat</div>
-                    <div class="product-meta">
-                        <span class="product-price">$110.00</span>
-                        <span class="product-size">Size S</span>
-                    </div>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
-    </main>
 
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CATEGORIES BANNER                                             -->
+<!-- ============================================================ -->
+<section class="section-wrap" style="padding:var(--space-2xl) 0;">
+    <div class="container">
+        <div class="section-header">
+            <h2>Browse by Category</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-md);">
+            {% set cats = [
+                ("fas fa-male",        "Men",         "/category/men"),
+                ("fas fa-female",      "Women",       "/category/women"),
+                ("fas fa-child",       "Kids",        "/category/kids"),
+                ("fas fa-glasses",     "Accessories", "/category/accessories"),
+                ("fas fa-shoe-prints", "Shoes",       "/category/shoes"),
+                ("fas fa-shopping-bag","Bags",        "/category/bags"),
+            ] %}
+            {% for icon, label, href in cats %}
+            <a href="{{ href }}" style="
+                display:flex;flex-direction:column;align-items:center;gap:10px;
+                background:var(--white);border:1px solid var(--gray-light);
+                border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-md);
+                text-align:center;font-weight:600;font-size:0.875rem;color:var(--gray-dark);
+                transition:all var(--transition-fast);
+            " onmouseover="this.style.borderColor='var(--e-green)';this.style.color='var(--e-green)';this.style.transform='translateY(-3px)';"
+               onmouseout="this.style.borderColor='var(--gray-light)';this.style.color='var(--gray-dark)';this.style.transform='';">
+                <i class="{{ icon }}" style="font-size:1.6rem;color:var(--e-green);"></i>
+                {{ label }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- NEW ARRIVALS                                                  -->
+<!-- ============================================================ -->
+<section class="section-wrap bg-off">
+    <div class="container">
+        <div class="section-header">
+            <h2>New Arrivals</h2>
+            <a href="/category/new" class="view-all-link">View all <i class="fas fa-arrow-right fa-xs"></i></a>
+        </div>
+        <div
+            class="product-grid"
+            hx-get="/partials/product-grid?section=new"
+            hx-trigger="load"
+            hx-swap="innerHTML"
+        ></div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SELL CTA BANNER                                               -->
+<!-- ============================================================ -->
+<section style="background:var(--e-green);padding:var(--space-2xl) var(--space-lg);text-align:center;margin-top:var(--space-3xl);">
+    <div style="max-width:600px;margin:0 auto;">
+        <h2 style="color:#fff;margin-bottom:var(--space-md);">Got clothes collecting dust?</h2>
+        <p style="color:rgba(255,255,255,0.85);margin-bottom:var(--space-xl);font-size:1.05rem;">List in 60 seconds. Sell to thousands of buyers across Kenya. Get paid via M-Pesa.</p>
+        <a href="/sell" class="btn btn-dark btn-lg">
+            <i class="fas fa-plus-circle"></i> Start Selling Today
+        </a>
+    </div>
+</section>
+
+{% endblock %}
