@@ -1,1 +1,161 @@
 <!-- Navigable grid featuring pricing, sizing, and color sidebar filters -->
+{% extends "layouts/base.html" %}
+{% block title %}{{ category_name | default("Shop") }}{% endblock %}
+
+{% block content %}
+
+<!-- Page header with breadcrumb -->
+<div class="page-header">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right fa-xs"></i></span>
+            <span>{{ category_name | default("All Products") }}</span>
+        </div>
+        <h1>{{ category_name | default("All Products") }}</h1>
+        <p class="text-muted">{{ total_items | default(0) }} items available</p>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom:var(--space-3xl);">
+    <div class="shop-layout">
+
+        <!-- ======================================================= -->
+        <!-- FILTER SIDEBAR (desktop)                                  -->
+        <!-- ======================================================= -->
+        <aside class="filter-sidebar">
+
+            <div class="filter-card">
+                <h4>Category</h4>
+                {% set categories = ["Men", "Women", "Kids", "Accessories", "Shoes", "Bags"] %}
+                {% for cat in categories %}
+                <label class="filter-option">
+                    <input type="checkbox" name="category" value="{{ cat.lower() }}"
+                        {% if cat.lower() == (category_name | default("") | lower) %}checked{% endif %}
+                        hx-get="/partials/product-grid"
+                        hx-include="[name='category'],[name='size'],[name='condition'],[name='price_max']"
+                        hx-target="#product-grid"
+                        hx-trigger="change"
+                    >
+                    {{ cat }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="filter-card">
+                <h4>Size</h4>
+                {% for size in ["XS", "S", "M", "L", "XL", "XXL"] %}
+                <label class="filter-option">
+                    <input type="checkbox" name="size" value="{{ size }}"
+                        hx-get="/partials/product-grid"
+                        hx-include="[name='category'],[name='size'],[name='condition'],[name='price_max']"
+                        hx-target="#product-grid"
+                        hx-trigger="change"
+                    >
+                    {{ size }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="filter-card">
+                <h4>Condition</h4>
+                {% for cond in ["Like New", "Good", "Fair"] %}
+                <label class="filter-option">
+                    <input type="checkbox" name="condition" value="{{ cond.lower().replace(' ', '_') }}"
+                        hx-get="/partials/product-grid"
+                        hx-include="[name='category'],[name='size'],[name='condition'],[name='price_max']"
+                        hx-target="#product-grid"
+                        hx-trigger="change"
+                    >
+                    {{ cond }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="filter-card">
+                <h4>Max Price (KSh)</h4>
+                <input
+                    type="range"
+                    name="price_max"
+                    min="0" max="10000" step="500"
+                    value="10000"
+                    style="width:100%;accent-color:var(--e-green);"
+                    hx-get="/partials/product-grid"
+                    hx-include="[name='category'],[name='size'],[name='condition'],[name='price_max']"
+                    hx-target="#product-grid"
+                    hx-trigger="change"
+                    oninput="document.getElementById('price-label').textContent = 'KSh ' + Number(this.value).toLocaleString()"
+                >
+                <p class="text-muted mt-sm" style="font-size:0.8rem;" id="price-label">KSh 10,000</p>
+            </div>
+
+        </aside>
+
+        <!-- ======================================================= -->
+        <!-- PRODUCT AREA                                              -->
+        <!-- ======================================================= -->
+        <div>
+
+            <!-- Sort bar -->
+            <div class="sort-bar">
+                <span class="results-count">
+                    Showing <strong>{{ total_items | default(0) }}</strong> results
+                </span>
+                <select class="sort-select"
+                    hx-get="/partials/product-grid"
+                    hx-include="[name='category'],[name='size'],[name='condition'],[name='price_max']"
+                    hx-target="#product-grid"
+                    hx-trigger="change"
+                    name="sort"
+                >
+                    <option value="default">Sort: Featured</option>
+                    <option value="price_asc">Price: Low → High</option>
+                    <option value="price_desc">Price: High → Low</option>
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                </select>
+            </div>
+
+            <!-- Product grid — HTMX swaps this on filter changes -->
+            <div
+                class="product-grid"
+                id="product-grid"
+                hx-get="/partials/product-grid?category={{ category_slug | default('all') }}"
+                hx-trigger="load"
+                hx-swap="innerHTML"
+            >
+                <!-- Skeleton on load -->
+                {% for i in range(12) %}
+                <div class="product-card" style="pointer-events:none;opacity:0.35;">
+                    <div class="product-image" style="background:var(--gray-light);"></div>
+                    <div class="product-details">
+                        <div style="height:10px;background:var(--gray-light);border-radius:4px;width:40%;margin-bottom:8px;"></div>
+                        <div style="height:14px;background:var(--gray-light);border-radius:4px;width:80%;margin-bottom:12px;"></div>
+                        <div style="height:12px;background:var(--gray-light);border-radius:4px;width:30%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div style="display:flex;justify-content:center;gap:var(--space-sm);margin-top:var(--space-2xl);">
+                {% if page > 1 %}
+                <a href="?page={{ page - 1 }}" class="btn btn-outline btn-sm">
+                    <i class="fas fa-chevron-left"></i> Prev
+                </a>
+                {% endif %}
+                <span style="padding:7px 14px;font-size:0.875rem;color:var(--gray);">
+                    Page {{ page | default(1) }} of {{ total_pages | default(1) }}
+                </span>
+                {% if page < total_pages %}
+                <a href="?page={{ page + 1 }}" class="btn btn-outline btn-sm">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
